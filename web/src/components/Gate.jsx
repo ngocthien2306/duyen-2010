@@ -46,7 +46,7 @@ export default function Gate({ onUnlock }) {
 
         <AnimatePresence mode="wait">
           {stage === 'sealed' && (
-            <motion.p key="tap" initial={{ opacity: 0 }} animate={{ opacity: [0.5, 1, 0.5] }} exit={{ opacity: 0 }} transition={{ repeat: Infinity, duration: 2 }} className="mt-6 text-wine-100">
+            <motion.p key="tap" initial={{ opacity: 0 }} animate={{ opacity: [0.5, 1, 0.5], transition: { repeat: Infinity, duration: 2 } }} exit={{ opacity: 0, transition: { duration: 0.2 } }} className="mt-6 text-wine-100">
               Chạm vào lá thư để mở nha 💌
             </motion.p>
           )}

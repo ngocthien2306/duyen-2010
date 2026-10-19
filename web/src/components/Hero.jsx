@@ -18,7 +18,7 @@ export default function Hero() {
       <motion.img
         src={photos.hero}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover opacity-45"
+        className="absolute inset-0 h-full w-full object-cover object-[50%_25%] opacity-45"
         initial={{ scale: 1.15 }}
         animate={{ scale: 1 }}
         transition={{ duration: 8, ease: 'easeOut' }}
