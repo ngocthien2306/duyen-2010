@@ -13,7 +13,7 @@ export default function Petals({ count = 22 }) {
     resize();
     window.addEventListener('resize', resize);
     const colors = ['#f6c7d0', '#ee9aab', '#fbe4e8', '#e2657f'];
-    const petals = Array.from({ length: count }, () => spawn(true));
+    const petals = Array.from({ length: w < 640 ? Math.round(count / 2) : count }, () => spawn(true));
     function spawn(initial) {
       return {
         x: Math.random() * w, y: initial ? Math.random() * h : -20,

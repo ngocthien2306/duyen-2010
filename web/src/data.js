@@ -66,7 +66,7 @@ export const story = [
     date: '05/10/2025',
     title: 'Trung thu đầu tiên bên nhau',
     place: 'Đài Loan',
-    photo: P('photos/food/5-10-2025_1.jpg'),
+    photo: P('photos/memory/trung_thu_18.jpg'),
     text: 'Những buổi nấu ăn cùng nhau, những lần đèo nhau băng qua phố phường. Những điều đơn giản thôi mà khiến mình hạnh phúc, em nhỉ.',
   },
   {
@@ -93,22 +93,18 @@ export const gallery = [
   { src: P('photos/memory/xiaolongbao2.jpg'), caption: 'Selfie no căng bụng', tilt: 2 },
 ];
 
-export const foodMemories = [
-  { date: '19/10/2025', title: 'xiaolongbaooo hen 好吃 😋', src: P('photos/food/19-10-2025_1.jpg') },
-  { date: '18/10/2025', title: 'Trưa mì kay, tối trứng chiên 🍳', src: P('photos/food/18-10-2025_1.jpg') },
-  { date: '17/10/2025', title: 'Bún thịt nướng, ngon nhứt nách 🔥', src: P('photos/food/17-10-2025_1.jpg') },
-  { date: '15/10/2025', title: 'Cuốn cuốn cuốn cuốn 🌀', src: P('photos/food/15-10-2025_1.jpg') },
-  { date: '13/10/2025', title: 'Cháo gì mà không coá hành 🥲', src: P('photos/food/13-10-2025_1.jpg') },
-  { date: '05/10/2025', title: 'Trung thu đầu tiên bên nhau 🌕', src: P('photos/food/5-10-2025_2.jpg') },
-  { date: '02/10/2025', title: 'Đem cơm qua khoa người đẹp 💖', src: P('photos/food/2-10-2025_1.jpg') },
-  { date: '14/09/2025', title: 'Ai cuốn chả mà đẹp thía 👨‍🍳', src: P('photos/food/14-9-2025_1.jpg') },
-  { date: '13/09/2025', title: 'Udon 3 phút nấu 30 phút 😂', src: P('photos/food/13-9-2025_1.jpg') },
-  { date: '07/09/2025', title: 'Tầm này mở quán được rồi 😎', src: P('photos/food/7-9-2025_1.jpg') },
-  { date: '03/09/2025', title: 'Lần đầu nấu cho công chúa ăn 👸', src: P('photos/food/3-9-2025_1.jpg') },
-  { date: '25/07/2025', title: 'Ăn chưa no nên kêu thêm 🍜', src: P('photos/food/25-7-2025_1.jpg') },
-  { date: '24/07/2025', title: 'Quán này ngon tuyệt dời ⭐', src: P('photos/food/24-7-2025_1.jpg') },
-  { date: '12/07/2025', title: 'Dô gọi món khí thế hết 🎉', src: P('photos/food/12-7-2025_1.jpg') },
-  { date: '07/07/2025', title: 'Gà ngonnnnn 🍗', src: P('photos/food/7-7-2025_1.jpg') },
+
+export const film = [
+  { kicker: 'Thiện presents', title: 'Minh Duyên', text: 'một bộ phim nhỏ về người con gái anh thương' },
+  { photo: P('photos/memory/3.jpg'), kicker: '23 · 04 · 2025 — Louisa', title: 'Lần đầu tim anh lỡ nhịp', text: 'anh trộm nhìn em, rồi về nhà đứng ngồi không yên' },
+  { photo: P('photos/memory/12.jpg'), kicker: '22 · 06 · 2025 — Zhongli', title: 'Buổi hẹn đầu tiên', text: 'ngồi cạnh em trên chuyến bus, tim đập loạn xạ' },
+  { photo: P('photos/memory/5.jpg'), kicker: '12 · 07 · 2025', title: 'Em thành người yêu anh', text: 'ngày anh chờ lâu lắm rồi' },
+  { photo: P('photos/memory/11.jpg'), kicker: 'Những ngày rong chơi', title: 'Đi đâu cũng được, miễn là có em', text: '' },
+  { photo: P('photos/memory/4.jpg'), kicker: 'Nàng thơ áo hồng', title: 'Công chúa của anh', text: 'xinh như một đóa hồng' },
+  { photo: P('photos/profile/mylove2.jpg'), kicker: 'Taipei 101', title: 'Mùa đông có em là ấm', text: '' },
+  { photo: P('photos/memory/trung_thu_19.jpg'), kicker: 'Thành phố về đêm', title: 'Cùng nhìn về một hướng', text: 'xứ người cũng thành nhà, vì có nhau' },
+  { photo: P('photos/memory/9.jpg'), kicker: 'Mãi về sau', title: 'Tay trong tay', text: 'anh sẽ luôn nắm thật chặt' },
+  { kicker: '20 · 10 · 2026', title: 'Chúc mừng 20/10, Minh Duyên', text: 'người phụ nữ anh thương nhất trên đời 💗' },
 ];
 
 export const letter = {

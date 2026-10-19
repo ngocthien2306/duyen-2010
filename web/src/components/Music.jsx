@@ -88,7 +88,7 @@ const Music = forwardRef(function Music(_, ref) {
         <button onClick={toggle} aria-label={playing ? 'Tạm dừng nhạc' : 'Phát nhạc'}
           className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-wine-900 text-white shadow-xl ring-2 ring-gold-300/60">
           <motion.span animate={{ rotate: playing ? 360 : 0 }} transition={{ repeat: playing ? Infinity : 0, duration: 4, ease: 'linear' }}
-            className="absolute inset-1 rounded-full bg-[repeating-radial-gradient(circle,#2a0713_0,#2a0713_2px,#4a0f22_3px)]" />
+            className="absolute inset-1 rounded-full bg-[repeating-radial-gradient(circle,#460624_0,#460624_2px,#7a1446_3px)]" />
           <span className="relative text-sm">{playing ? '❚❚' : '▶'}</span>
         </button>
         <AnimatePresence>

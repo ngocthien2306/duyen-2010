@@ -5,6 +5,7 @@ import Petals from './components/Petals';
 import Hero from './components/Hero';
 import Counter from './components/Counter';
 import Story from './components/Story';
+import Film from './components/Film';
 import Gallery from './components/Gallery';
 import Letter from './components/Letter';
 import Reasons from './components/Reasons';
@@ -46,6 +47,7 @@ export default function App() {
           <main>
             <Hero />
             <Counter />
+            <Film />
             <Story />
             <Gallery />
             <Letter />

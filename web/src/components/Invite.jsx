@@ -13,7 +13,8 @@ export default function Invite({ serverAnswer }) {
 
   const dodge = () => {
     setTries((t) => t + 1);
-    setNoPos({ x: (Math.random() - 0.5) * 240, y: (Math.random() - 0.5) * 160 });
+    const narrow = window.innerWidth < 640;
+    setNoPos({ x: (Math.random() - 0.5) * (narrow ? 140 : 240), y: (Math.random() - 0.5) * (narrow ? 120 : 160) });
   };
 
   const yes = () => {
@@ -49,7 +50,7 @@ export default function Invite({ serverAnswer }) {
           {answered ? (
             <motion.p initial={{ scale: 0.6 }} animate={{ scale: 1 }} className="mt-10 font-script text-3xl text-gold-300">Hẹn em tối nay nha! 💖</motion.p>
           ) : (
-            <div className="relative mt-10 flex h-28 items-center justify-center gap-4">
+            <div className="relative mt-10 flex h-36 flex-col items-center justify-center gap-4 sm:h-28 sm:flex-row">
               <button onClick={yes} className="btn-primary z-10 text-lg">Em đồng ý 💖</button>
               <motion.button animate={noPos} transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                 onPointerEnter={dodge} onClick={dodge} className="btn bg-white/10 ring-1 ring-white/30">

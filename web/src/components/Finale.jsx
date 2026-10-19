@@ -52,7 +52,7 @@ export default function Finale() {
   }, [launching]);
 
   return (
-    <section id="finale" className="relative min-h-[100svh] overflow-hidden bg-[radial-gradient(ellipse_at_bottom,#4a0f22_0%,#12030a_70%)] text-white"
+    <section id="finale" className="relative min-h-[100svh] overflow-hidden bg-[radial-gradient(ellipse_at_bottom,#7a1446_0%,#1a020c_70%)] text-white"
       onClick={(e) => { const r = e.currentTarget.getBoundingClientRect(); fire.current(e.clientX - r.left, e.clientY - r.top); }}>
       <canvas ref={canvas} className="pointer-events-none absolute inset-0 h-full w-full" />
       <div className="section relative flex min-h-[100svh] flex-col items-center justify-center text-center">

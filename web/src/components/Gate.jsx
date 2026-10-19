@@ -29,7 +29,7 @@ export default function Gate({ onUnlock }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[60] flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_top,#6b1530_0%,#2a0713_70%)] px-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_top,#b4185d_0%,#460624_70%)] px-4"
       exit={{ opacity: 0, scale: 1.08 }}
       transition={{ duration: 0.9 }}
     >

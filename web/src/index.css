@@ -40,3 +40,7 @@ body {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   html { scroll-behavior: auto; }
 }
+
+/* Chừa chỗ cho thanh mục lục trên điện thoại khi nhảy tới từng phần */
+section, header { scroll-margin-top: 3.25rem; }
+@media (min-width: 768px) { section, header { scroll-margin-top: 0; } }
