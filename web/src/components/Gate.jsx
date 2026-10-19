@@ -29,16 +29,16 @@ export default function Gate({ onUnlock }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[60] flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_top,#b4185d_0%,#460624_70%)] px-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center overflow-hidden gate-romance px-4"
       exit={{ opacity: 0, scale: 1.08 }}
       transition={{ duration: 0.9 }}
     >
       <Stars />
       <div className="relative flex w-full max-w-sm flex-col items-center text-center">
-        <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="font-script text-3xl text-gold-300">
+        <motion.p initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="font-script text-3xl text-wine-600">
           Ngày Phụ nữ Việt Nam
         </motion.p>
-        <motion.h1 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-1 font-serif text-6xl font-bold text-shine">
+        <motion.h1 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-1 font-serif text-6xl font-bold text-wine-700">
           20 · 10
         </motion.h1>
 
@@ -46,26 +46,26 @@ export default function Gate({ onUnlock }) {
 
         <AnimatePresence mode="wait">
           {stage === 'sealed' && (
-            <motion.p key="tap" initial={{ opacity: 0 }} animate={{ opacity: [0.5, 1, 0.5], transition: { repeat: Infinity, duration: 2 } }} exit={{ opacity: 0, transition: { duration: 0.2 } }} className="mt-6 text-wine-100">
+            <motion.p key="tap" initial={{ opacity: 0 }} animate={{ opacity: [0.5, 1, 0.5], transition: { repeat: Infinity, duration: 2 } }} exit={{ opacity: 0, transition: { duration: 0.2 } }} className="mt-6 text-wine-700">
               Chạm vào lá thư để mở nha 💌
             </motion.p>
           )}
           {stage === 'code' && (
             <motion.div key="code" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-6 w-full">
-              <p className="text-sm text-wine-100">Nhập mật mã để mở quà</p>
+              <p className="text-sm text-wine-700">Nhập mật mã để mở quà</p>
               <motion.div animate={shake ? { x: [0, -12, 12, -8, 8, 0] } : {}} className="my-4 flex justify-center gap-3">
                 {Array.from({ length: couple.passcode.length }).map((_, i) => (
-                  <span key={i} className={`h-4 w-4 rounded-full border-2 border-gold-300 transition ${i < code.length ? 'bg-gold-300 scale-110' : ''}`} />
+                  <span key={i} className={`h-4 w-4 rounded-full border-2 border-wine-400 transition ${i < code.length ? 'bg-wine-500 scale-110' : ''}`} />
                 ))}
               </motion.div>
-              {wrong > 0 && <p className="mb-3 text-sm text-gold-300">Gợi ý: {couple.passcodeHint}</p>}
+              {wrong > 0 && <p className="mb-3 text-sm text-wine-600">Gợi ý: {couple.passcodeHint}</p>}
               <div className="mx-auto grid w-64 grid-cols-3 gap-3">
                 {KEYS.map((k, i) => (
                   <button
                     key={i}
                     onClick={() => press(k)}
                     disabled={!k}
-                    className="h-14 rounded-2xl bg-white/10 text-xl font-semibold text-white ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 active:scale-90 disabled:opacity-0"
+                    className="h-14 rounded-2xl bg-white/70 text-xl font-semibold text-wine-800 ring-1 ring-wine-200 backdrop-blur transition hover:bg-white active:scale-90 disabled:opacity-0"
                   >
                     {k}
                   </button>
@@ -74,7 +74,7 @@ export default function Gate({ onUnlock }) {
             </motion.div>
           )}
           {stage === 'opening' && (
-            <motion.p key="ok" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 font-script text-3xl text-gold-300">
+            <motion.p key="ok" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-6 font-script text-3xl text-wine-600">
               Đúng rồi! Em giỏi quá 💖
             </motion.p>
           )}
@@ -133,7 +133,7 @@ function Stars() {
       {stars.map((s, i) => (
         <motion.span
           key={i}
-          className="absolute rounded-full bg-white"
+          className="absolute rounded-full bg-wine-300"
           style={{ left: s.left, top: s.top, width: s.s, height: s.s }}
           animate={{ opacity: [0.2, 1, 0.2] }}
           transition={{ repeat: Infinity, duration: s.d, delay: i * 0.1 }}

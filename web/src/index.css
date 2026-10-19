@@ -14,9 +14,9 @@ body {
   .section { @apply relative mx-auto w-full max-w-6xl px-4 sm:px-6 py-20 sm:py-28; }
   .eyebrow { @apply font-script text-2xl sm:text-3xl text-wine-500; }
   .h2 { @apply font-serif text-3xl sm:text-5xl font-bold text-wine-900 leading-tight; }
-  .card { @apply rounded-3xl bg-white/80 backdrop-blur shadow-[0_20px_60px_-20px_rgba(107,21,48,0.25)] ring-1 ring-wine-100; }
+  .card { @apply rounded-3xl bg-white/80 backdrop-blur shadow-[0_16px_50px_-22px_rgba(168,55,104,0.2)] ring-1 ring-wine-100; }
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold transition active:scale-95 disabled:opacity-50 disabled:pointer-events-none; }
-  .btn-primary { @apply btn bg-gradient-to-r from-wine-500 to-wine-700 text-white shadow-lg shadow-wine-500/30 hover:shadow-wine-500/50 hover:brightness-110; }
+  .btn-primary { @apply btn bg-gradient-to-r from-wine-400 to-wine-600 text-white shadow-lg shadow-wine-500/30 hover:shadow-wine-500/50 hover:brightness-110; }
   .btn-ghost { @apply btn bg-white/70 text-wine-700 ring-1 ring-wine-200 hover:bg-white; }
   .paper {
     background: #fffdf8 repeating-linear-gradient(transparent, transparent 33px, #f3e3dc 34px);
@@ -44,3 +44,25 @@ body {
 /* Chừa chỗ cho thanh mục lục trên điện thoại khi nhảy tới từng phần */
 section, header { scroll-margin-top: 3.25rem; }
 @media (min-width: 768px) { section, header { scroll-margin-top: 0; } }
+
+/* Blush stationery, pearl paper and a bouquet as the centerpiece. */
+body { background-image: radial-gradient(ellipse at 100% 15%, #ffe8f2 0, transparent 45%); }
+.hero-romance { background: radial-gradient(ellipse at 78% 40%, #fbd6e6 0%, #fff1f6 45%, #fffaf7 100%); }
+.gate-romance { background: radial-gradient(ellipse at 50% 35%, #fffaf8 0%, #fce3ee 52%, #edb2cd 100%); }
+.hero-name { color: #c33673; font-style: italic; }
+.hero-subtitle { display: inline-block; margin-top: .7rem; font-size: .57em; line-height: 1.4; color: #79445e; }
+.hero-date { position: absolute; top: 1rem; right: 3%; font: italic clamp(7rem, 20vw, 18rem)/1 Georgia, serif; letter-spacing: -.07em; color: #bc5485; opacity: .055; pointer-events: none; }
+.hero-orbit { position: absolute; border: 1px solid #d3a27335; border-radius: 50%; pointer-events: none; }
+.hero-orbit-one { width: 42rem; height: 42rem; right: -12rem; top: -17rem; }
+.hero-orbit-two { width: 39rem; height: 39rem; left: -27rem; bottom: -21rem; }
+.bouquet-stage { isolation: isolate; }
+.bouquet-halo { position: absolute; z-index: -1; inset: 14% 3% 18%; border-radius: 50%; background: radial-gradient(ellipse, #fffaf9aa 0%, #f6b7d24a 55%, transparent 73%); box-shadow: 0 0 90px #fff8fcaa; }
+.bouquet-caption { position: absolute; top: 4%; left: 50%; width: 100%; transform: translateX(-50%) rotate(-7deg); text-align: center; font: 1.3rem 'Dancing Script', cursive; color: #b57d90; }
+.bouquet-button { border-radius: 45%; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: filter .3s, transform .3s; }
+.bouquet-button:hover { filter: saturate(1.08); transform: translateY(-4px); }
+.bouquet-button:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid #bd376f; outline-offset: 6px; }
+@media (max-width: 767px) {
+  .bouquet-stage { margin-top: .5rem; }
+  .bouquet-caption { font-size: 1.05rem; }
+}
+@media (prefers-reduced-motion: reduce) { .bouquet-button:hover { transform: none; } }

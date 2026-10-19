@@ -1,129 +1,79 @@
-import { motion } from 'framer-motion';
+import { useId } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 
-// Bó hoa hồng hồng vẽ bằng SVG: hồng nở dần từ nụ, lá, hoa baby, giấy gói 2 lớp và nơ lụa
-const PALETTES = [
-  ['#9c0f48', '#ec407a', '#fbb6cf'], // hồng đậm
-  ['#c2185b', '#f06292', '#ffc6da'], // hồng tươi
-  ['#d81b60', '#f48fb1', '#ffd6e5'], // hồng phấn
-  ['#e0457b', '#ffa3c0', '#ffe3ee'], // hồng pastel
+const COLORS = [
+  ['#a81752', '#ec6199', '#ffd0e2'],
+  ['#ce4479', '#ffa8c9', '#fff1f5'],
+  ['#b82767', '#f786b5', '#ffe2ec'],
+  ['#9b2059', '#dc508b', '#ffb6d2'],
 ];
-
 const ROSES = [
-  // x, y, scale, palette, rotate — sắp thành hình vòm
-  [200, 120, 1.05, 0, 0], [140, 140, 0.95, 1, -20], [260, 140, 0.95, 2, 25],
-  [95, 185, 0.85, 3, -35], [305, 185, 0.85, 1, 40], [170, 190, 1.0, 2, 10],
-  [235, 195, 1.0, 0, -15], [130, 240, 0.85, 1, 15], [270, 240, 0.85, 3, -10], [200, 250, 0.95, 1, 30],
+  [192, 99, .8, 1, -12], [144, 111, .79, 2, 22], [242, 109, .83, 0, -18],
+  [100, 140, .8, 1, -25], [290, 139, .83, 2, 25],
+  [157, 151, .94, 0, 12], [216, 145, .96, 1, -8], [262, 172, .86, 3, 20],
+  [77, 187, .76, 2, -14], [122, 191, .91, 3, 30], [186, 197, 1.02, 2, -16],
+  [319, 187, .75, 1, 8], [299, 220, .88, 0, -18], [240, 211, .95, 0, 15],
+  [98, 238, .79, 1, -25], [147, 249, .91, 2, 22], [262, 257, .83, 1, -12],
+  [201, 262, .98, 1, 6], [226, 297, .62, 2, 24],
 ];
+const SPRIGS = [[89, 181, -55], [115, 128, -36], [151, 112, -22], [252, 121, 28], [294, 167, 53], [320, 225, 73], [82, 245, -72], [286, 278, 65]];
+const BABY = [[61, 165], [95, 112], [160, 72], [226, 71], [292, 109], [337, 163], [54, 218], [341, 240], [118, 285], [288, 291]];
 
-const LEAVES = [
-  [70, 230, -55], [330, 230, 55], [110, 110, -30], [290, 105, 35], [60, 175, -75], [345, 170, 70], [150, 280, -20], [255, 285, 20],
-];
-
-const BABY = [[60, 140], [340, 135], [120, 85], [285, 75], [200, 70], [45, 215], [355, 215], [165, 95], [240, 92]];
-
-function petal(r) {
-  return `M0 0 C ${-r * 0.95} ${-r * 0.25} ${-r * 0.85} ${-r * 1.05} 0 ${-r * 0.98} C ${r * 0.85} ${-r * 1.05} ${r * 0.95} ${-r * 0.25} 0 0 Z`;
+function Rose({ flower, index, id, reduced }) {
+  const [x, y, scale, palette, rotation] = flower;
+  return <g transform={`translate(${x} ${y}) rotate(${rotation}) scale(${scale})`}>
+    <ellipse cx="1" cy="6" rx="39" ry="35" fill="#8c1748" opacity=".17" />
+    <motion.g initial={reduced ? false : { scale: .3, opacity: 0, rotate: -25 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ delay: .25 + index * .055, duration: 1.1 }}>
+      {[{ n: 7, r: 43, offset: 8 }, { n: 6, r: 34, offset: 33 }, { n: 5, r: 25, offset: 5 }, { n: 4, r: 17, offset: 40 }].map((layer, li) =>
+        <g key={li}>
+          {Array.from({ length: layer.n }, (_, p) => {
+            const r = layer.r * (1 + Math.sin(p * 5 + index) * .065);
+            return <g key={p} transform={`rotate(${p * 360 / layer.n + layer.offset})`}>
+              <path d={`M ${-r * .27} 4 C ${-r * 1.04} ${-r * .12}, ${-r * .91} ${-r * .9}, ${-r * .23} ${-r} C ${r * .21} ${-r * 1.1}, ${r * .87} ${-r * .87}, ${r * .66} ${-r * .42} Q ${r * .42} ${r * .12}, ${-r * .27} 4`} fill={`url(#${id}-rose-${palette})`} stroke={COLORS[palette][2]} strokeWidth=".65" />
+              <path d={`M ${-r * .66} ${-r * .5} Q ${-r * .6} ${-r * .97} ${-r * .13} ${-r * .94}`} fill="none" stroke="#fff9fc" strokeWidth="1.1" opacity=".65" strokeLinecap="round" />
+            </g>;
+          })}
+        </g>
+      )}
+      <path d="M-6 5 C-16-4-3-16 7-9 C19 1 3 16-7 8 C-17-1-5-10 3-5 C10 0 3 7-2 3" fill={`url(#${id}-rose-${palette})`} stroke={COLORS[palette][0]} strokeWidth="1.8" strokeLinecap="round" />
+    </motion.g>
+  </g>;
 }
 
-const LAYERS = [
-  { n: 6, r: 40, off: 0, shade: 2 },
-  { n: 5, r: 33, off: 22, shade: 1 },
-  { n: 5, r: 25, off: 52, shade: 1 },
-  { n: 4, r: 17, off: 15, shade: 0 },
-];
-
-function Rose({ x, y, s, pal, rot, delay }) {
-  return (
-    <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${s})`}>
-      <ellipse cx="3" cy="6" rx="42" ry="38" fill="#7a0a35" opacity="0.18" />
-      {LAYERS.map((L, li) => (
-        <motion.g key={li}
-          initial={{ scale: li === 3 ? 0.6 : 0.2, opacity: 0, rotate: -40 }}
-          animate={{ scale: 1, opacity: 1, rotate: 0 }}
-          transition={{ delay: delay + (3 - li) * 0.18, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}>
-          {Array.from({ length: L.n }).map((_, i) => (
-            <g key={i} transform={`rotate(${(360 / L.n) * i + L.off})`}>
-              <path d={petal(L.r)} fill={`url(#rg${pal}-${L.shade})`} stroke="rgba(255,255,255,0.55)" strokeWidth="0.8" />
-              <path d={`M0 ${-L.r * 0.18} Q ${L.r * 0.18} ${-L.r * 0.55} 0 ${-L.r * 0.86}`} fill="none" stroke="rgba(120,0,40,0.12)" strokeWidth="1" />
-            </g>
-          ))}
-        </motion.g>
-      ))}
-      <motion.g initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay, duration: 0.6 }}>
-        <circle r="9" fill={`url(#rg${pal}-0)`} />
-        <path d="M-3 2 C -9 -5 4 -10 7 -3 C 10 5 -3 10 -8 3 C -12 -5 -2 -14 8 -10" fill="none" stroke={PALETTES[pal][0]} strokeWidth="1.6" strokeLinecap="round" opacity="0.85" />
-      </motion.g>
+export default function RoseBouquet({ className = '' }) {
+  const id = useId().replace(/:/g, '');
+  const reduced = useReducedMotion();
+  return <motion.svg viewBox="0 0 400 490" className={className} role="img" aria-label="Bó 19 bông hồng phấn, hoa baby và lá bạc, gói giấy ngọc trai với nơ lụa hồng"
+    animate={reduced ? {} : { rotate: [-1, 1, -1], y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 7, ease: 'easeInOut' }}>
+    <defs>
+      {COLORS.map((colors, i) => <radialGradient key={i} id={`${id}-rose-${i}`} cx=".45" cy=".85" r=".95"><stop stopColor={colors[0]} /><stop offset=".52" stopColor={colors[1]} /><stop offset="1" stopColor={colors[2]} /></radialGradient>)}
+      <linearGradient id={`${id}-paper`} x2="1" y2=".6"><stop stopColor="#fff9f5" /><stop offset=".45" stopColor="#fce5ed" /><stop offset=".7" stopColor="#fff7fa" /><stop offset="1" stopColor="#efb6cc" /></linearGradient>
+      <linearGradient id={`${id}-silk`}><stop stopColor="#b72b65" /><stop offset=".28" stopColor="#ee82b0" /><stop offset=".48" stopColor="#f8b5d0" /><stop offset=".62" stopColor="#df6095" /><stop offset="1" stopColor="#a91c58" /></linearGradient>
+      <linearGradient id={`${id}-leaf`} x2="1" y2="1"><stop stopColor="#abc3ad" /><stop offset="1" stopColor="#507e70" /></linearGradient>
+    </defs>
+    <path d="M44 159 L97 113 L163 156 L216 97 L271 150 L310 112 L366 161 L264 414 L149 414Z" fill="#eaa8c3" stroke="#f9d7e4" />
+    <path d="M37 196 L64 147 L177 228 L327 144 L369 195 L259 432 L155 433Z" fill="#f8d6e2" stroke="#fff3f5" strokeWidth="1.5" />
+    {SPRIGS.map(([x, y, angle], i) => <g key={i} transform={`translate(${x} ${y}) rotate(${angle}) scale(.78)`}>
+      <path d="M0 26 Q-8-28 0-100" fill="none" stroke="#749582" strokeWidth="1.4" />
+      {[0, 1, 2, 3].map(n => <g key={n} transform={`translate(${-n % 2 * 3} ${-n * 22})`}><ellipse cx="-9" cy="-9" rx="9" ry="15" transform="rotate(-38 -9 -9)" fill={`url(#${id}-leaf)`} /><ellipse cx="10" cy="-19" rx="9" ry="14" transform="rotate(40 10 -19)" fill={`url(#${id}-leaf)`} /><path d="M-15-20 L0 0 L17-29" stroke="#e1e8cf" opacity=".4" strokeWidth=".6" fill="none" /></g>)}
+    </g>)}
+    {BABY.map(([x, y], i) => <g key={i} transform={`translate(${x} ${y})`}>
+      <path d="M8 35 L0 0 M5 24 L-12 6 M4 18 L14-10" stroke="#91a18a" strokeWidth=".9" fill="none" />
+      {[[0, 0], [-12, 6], [14, -10], [9, 12], [-6, -10]].map(([dx, dy], j) => <g key={j} transform={`translate(${dx} ${dy})`}><circle r="4.3" fill="#eec8ce" />{[0, 72, 144, 216, 288].map(a => <circle key={a} cx={Math.cos(a * Math.PI / 180) * 2} cy={Math.sin(a * Math.PI / 180) * 2} r="2.5" fill="#fffaf5" />)}<circle r="1.1" fill="#d5b179" /></g>)}
+    </g>)}
+    {ROSES.map((flower, i) => <Rose key={i} flower={flower} index={i} id={id} reduced={reduced} />)}
+    <path d="M52 265 Q110 290 211 345 L171 432 L143 418Z" fill={`url(#${id}-paper)`} stroke="#fff6f8" strokeWidth="1.5" />
+    <path d="M345 262 Q282 302 160 338 L177 434 L259 424Z" fill={`url(#${id}-paper)`} stroke="#fff9fa" strokeWidth="1.5" />
+    <path d="M74 280 Q133 325 193 348 M328 283 Q264 329 213 349 L248 413 M98 314 L151 409" fill="none" stroke="#d69ab2" strokeWidth=".8" opacity=".6" />
+    <path d="M145 417 Q200 439 259 424" fill="none" stroke="#c9a478" strokeWidth="1.2" />
+    <g transform="translate(202 367) rotate(-7)">
+      <path d="M-6 3 Q-28 44-40 91 L-18 82 L-8 96 Q1 57 8 7" fill={`url(#${id}-silk)`} />
+      <path d="M3 5 Q5 52 30 93 L35 77 L56 83 Q29 44 12 2" fill={`url(#${id}-silk)`} />
+      <path d="M-3 0 C-90-66-91 30-48 23 Q-22 21-3 0 M4 0 C85-68 94 26 51 23 Q26 24 4 0" fill={`url(#${id}-silk)`} stroke="#fbb9d2" strokeWidth=".7" />
+      <path d="M-7-5 Q-45-31-64-14 M11-5 Q51-33 67-14" stroke="#ffd0e1" strokeWidth="1.3" fill="none" opacity=".7" />
+      <rect x="-10" y="-10" width="23" height="21" rx="8" fill={`url(#${id}-silk)`} />
     </g>
-  );
-}
-
-export default function RoseBouquet({ className = '', onClick }) {
-  return (
-    <motion.svg viewBox="0 0 400 540" className={className} onClick={onClick} role="img" aria-label="Bó hoa hồng tặng em"
-      animate={{ rotate: [-1.2, 1.2, -1.2] }} transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }} style={{ transformOrigin: '200px 520px' }}>
-      <defs>
-        {PALETTES.map((p, i) => [0, 1, 2].map((shade) => (
-          <radialGradient key={`${i}-${shade}`} id={`rg${i}-${shade}`} cx="0.5" cy="1" r="1.05">
-            <stop offset="0" stopColor={p[0]} />
-            <stop offset={0.35 + shade * 0.12} stopColor={p[1]} />
-            <stop offset="1" stopColor={p[2]} />
-          </radialGradient>
-        )))}
-        <linearGradient id="paperBack" x1="0" x2="1">
-          <stop offset="0" stopColor="#f9c5d5" /><stop offset="0.5" stopColor="#fde2ea" /><stop offset="1" stopColor="#f6b3c8" />
-        </linearGradient>
-        <linearGradient id="paperFront" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#fff" stopOpacity="0.95" /><stop offset="1" stopColor="#fbd3e0" stopOpacity="0.95" />
-        </linearGradient>
-        <linearGradient id="ribbon" x1="0" x2="1">
-          <stop offset="0" stopColor="#c2185b" /><stop offset="0.5" stopColor="#f06292" /><stop offset="1" stopColor="#ad1457" />
-        </linearGradient>
-        <linearGradient id="leaf" x1="0" x2="1">
-          <stop offset="0" stopColor="#2e6b3f" /><stop offset="1" stopColor="#5f9e6e" />
-        </linearGradient>
-        <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#831343" floodOpacity="0.25" /></filter>
-      </defs>
-
-      {/* Giấy gói phía sau */}
-      <motion.path d="M30 150 L80 120 L120 160 L165 105 L200 140 L240 100 L280 158 L320 118 L372 152 L250 470 L150 470 Z"
-        fill="url(#paperBack)" filter="url(#soft)" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} />
-
-      {LEAVES.map(([x, y, r], i) => (
-        <motion.path key={i} d="M0 0 C 14 -18 14 -46 0 -64 C -14 -46 -14 -18 0 0 Z M0 -4 L0 -58" fill="url(#leaf)" stroke="#24563a" strokeWidth="0.8"
-          transform={`translate(${x} ${y}) rotate(${r})`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 + i * 0.05 }} />
-      ))}
-
-      {BABY.map(([x, y], i) => (
-        <motion.g key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.2 + i * 0.06, type: 'spring' }} style={{ transformOrigin: `${x}px ${y}px` }}>
-          {[[0, 0], [7, -5], [-7, -4], [3, 7], [-5, 6], [10, 4], [-10, 2]].map(([dx, dy], k) => (
-            <circle key={k} cx={x + dx} cy={y + dy} r={k === 0 ? 3.2 : 2.6} fill="#fff" stroke="#f8bbd0" strokeWidth="0.6" />
-          ))}
-        </motion.g>
-      ))}
-
-      {ROSES.map(([x, y, s, pal, rot], i) => <Rose key={i} x={x} y={y} s={s} pal={pal} rot={rot} delay={0.6 + i * 0.12} />)}
-
-      {/* Giấy gói phía trước */}
-      <motion.path d="M70 270 Q 200 330 330 270 L 250 480 Q 200 495 150 480 Z" fill="url(#paperFront)" stroke="#f8bbd0" strokeWidth="1.2" filter="url(#soft)"
-        initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }} />
-      <path d="M120 300 L 175 470 M280 300 L 225 470" stroke="#fbd3e0" strokeWidth="2" />
-
-      {/* Nơ lụa */}
-      <motion.g initial={{ scale: 0, rotate: -30 }} animate={{ scale: 1, rotate: 0 }} transition={{ delay: 2.6, type: 'spring', stiffness: 120 }} style={{ transformOrigin: '200px 405px' }}>
-        <path d="M200 405 C 160 370 130 380 140 408 C 148 430 180 418 200 405 Z" fill="url(#ribbon)" />
-        <path d="M200 405 C 240 370 270 380 260 408 C 252 430 220 418 200 405 Z" fill="url(#ribbon)" />
-        <path d="M196 410 C 185 440 175 470 168 500 L 182 494 L 190 506 C 196 476 202 444 204 412 Z" fill="#d81b60" />
-        <path d="M204 410 C 215 440 225 470 232 500 L 218 494 L 210 506 C 204 476 198 444 196 412 Z" fill="#c2185b" />
-        <ellipse cx="200" cy="406" rx="11" ry="9" fill="#ad1457" />
-        <ellipse cx="197" cy="403" rx="4" ry="3" fill="#f8bbd0" opacity="0.7" />
-      </motion.g>
-
-      {/* Lấp lánh */}
-      {[[60, 90], [345, 80], [30, 300], [372, 300], [200, 40], [110, 40], [300, 40]].map(([x, y], i) => (
-        <motion.path key={i} d={`M${x} ${y - 9} L${x + 2.5} ${y - 2.5} L${x + 9} ${y} L${x + 2.5} ${y + 2.5} L${x} ${y + 9} L${x - 2.5} ${y + 2.5} L${x - 9} ${y} L${x - 2.5} ${y - 2.5} Z`}
-          fill="#fff" animate={{ opacity: [0, 1, 0], scale: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 2.4, delay: 3 + i * 0.35 }}
-          style={{ transformOrigin: `${x}px ${y}px` }} />
-      ))}
-    </motion.svg>
-  );
+    <g transform="translate(257 358) rotate(13)"><path d="M-8-13 Q-24-33-30-7" fill="none" stroke="#c6a174" strokeWidth="1" /><rect x="-24" y="-9" width="46" height="30" rx="2" fill="#fffaf4" stroke="#ddbc98" strokeWidth=".6" /><text x="-1" y="4" textAnchor="middle" fill="#a34d70" fontFamily="Georgia, serif" fontStyle="italic" fontSize="7">for you</text><path d="M-3 10 Q-6 6-8 10 Q-9 13-3 16 Q3 12 1 10 Q-1 7-3 10" fill="#d77c9f" /></g>
+    {[[44, 116], [350, 103], [193, 30], [43, 288], [356, 302]].map(([x, y], i) => <motion.path key={i} d={`M${x} ${y - 5} Q${x} ${y} ${x + 5} ${y} Q${x} ${y} ${x} ${y + 5} Q${x} ${y} ${x - 5} ${y} Q${x} ${y} ${x} ${y - 5}`} fill="#c79a63" animate={reduced ? { opacity: .6 } : { opacity: [.2, .9, .2] }} transition={{ repeat: Infinity, duration: 3, delay: i * .4 }} />)}
+  </motion.svg>;
 }

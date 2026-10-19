@@ -21,43 +21,49 @@ export default function Hero() {
   return (
     <header
       id="top"
-      onClick={(e) => heartBurst(e.clientX / window.innerWidth, e.clientY / window.innerHeight)}
-      className="relative flex min-h-[100svh] cursor-pointer items-center overflow-hidden bg-wine-950 text-white"
+      className="hero-romance relative flex min-h-[100svh] items-center overflow-hidden text-wine-950"
     >
       <motion.img
         src={photos.hero}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover object-[50%_25%] opacity-45"
+        className="absolute inset-0 h-full w-full object-cover object-[50%_25%] opacity-[0.07]"
         initial={{ scale: 1.15 }}
         animate={{ scale: 1 }}
         transition={{ duration: 8, ease: 'easeOut' }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-wine-950/70 via-wine-900/40 to-wine-950" />
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-4 px-4 pb-24 pt-14 sm:pt-20 sm:px-6 md:grid-cols-[1.2fr_1fr]">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#fff5f8]/50 via-[#fff0f6]/80 to-[#fff7fa]" />
+      <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
+      <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
+      <span className="hero-date" aria-hidden="true">20.10</span>
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-2 px-6 pb-20 pt-20 sm:gap-8 sm:pt-24 sm:px-8 md:grid-cols-[1fr_1.15fr]">
         <div className="text-center md:text-left">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="font-script text-3xl text-gold-300 sm:text-4xl">
+          <p className="mb-5 text-[10px] font-medium uppercase tracking-[.32em] text-wine-600">Một món quà dành riêng cho em</p>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="font-script text-2xl text-wine-500 sm:text-3xl">
             Chúc mừng ngày Phụ nữ Việt Nam
           </motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.8 }} className="mt-3 font-serif text-[2.6rem] font-bold leading-[1.08] sm:text-7xl">
-            Gửi <span className="text-shine">{couple.her}</span>,<br /> người con gái anh thương
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.8 }} className="mt-4 font-serif text-[2.7rem] font-medium leading-[1.15] tracking-tight sm:text-6xl lg:text-7xl">
+            Gửi <span className="hero-name">{couple.her}</span>,<br /> <span className="hero-subtitle">người con gái anh thương.</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="mx-auto mt-6 max-w-lg text-lg text-wine-100 md:mx-0">
-            20/10 năm nay, anh gói cả trái tim vào trang web nhỏ này. Kéo xuống từ từ thôi nha — mỗi góc đều có một bất ngờ 🎁
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="mx-auto mt-5 max-w-sm text-sm leading-7 text-wine-800/75 md:mx-0">
+            Một bó hoa, một lá thư, và thật nhiều yêu thương. Anh gói tất cả ở đây, chỉ dành cho em.
           </motion.p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
             <a href="#letter" onClick={(e) => e.stopPropagation()} className="btn-primary">Đọc thư anh viết 💌</a>
-            <a href="#coupons" onClick={(e) => e.stopPropagation()} className="btn bg-white/10 text-white ring-1 ring-white/30 backdrop-blur hover:bg-white/20">Mở quà 🎁</a>
+            <a href="#coupons" onClick={(e) => e.stopPropagation()} className="btn-ghost">Mở quà 🎁</a>
           </motion.div>
-          <p className="mt-6 text-xs text-wine-200/70">(chạm vào bất cứ đâu để thả tim)</p>
+          <p className="mt-7 font-script text-xl text-wine-500">Vì có em, ngày nào cũng thật đẹp ♡</p>
         </div>
-        <div className="relative mx-auto w-[min(78vw,22rem)] md:w-[26rem]">
-          <div className="absolute inset-[12%] rounded-full bg-wine-400/40 blur-3xl" />
-          <RoseBouquet className="relative w-full drop-shadow-[0_25px_45px_rgba(0,0,0,0.45)]" onClick={(e) => { e.stopPropagation(); roseRain(); }} />
-          <p className="relative -mt-2 text-center font-script text-xl text-wine-100">chạm vào bó hoa nè 🌹</p>
+        <div className="bouquet-stage relative mx-auto w-full max-w-[26rem] md:max-w-[34rem]">
+          <div className="bouquet-halo" aria-hidden="true" />
+          <span className="bouquet-caption" aria-hidden="true">Blooming, just for you</span>
+          <button type="button" className="bouquet-button relative block w-full" aria-label="Chạm bó hoa để thả mưa hoa" onClick={() => { heartBurst(); roseRain(); }}>
+            <RoseBouquet className="relative w-full drop-shadow-[0_22px_24px_rgba(164,52,100,0.16)]" />
+          </button>
+          <p className="relative -mt-2 text-center text-xs tracking-wide text-wine-600">Chạm vào bó hoa, có bất ngờ nè ♡</p>
         </div>
       </div>
       <motion.a href="#counter" onClick={(e) => e.stopPropagation()} animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-2xl text-wine-200" aria-label="Cuộn xuống">↓</motion.a>
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-2xl text-wine-500" aria-label="Cuộn xuống">↓</motion.a>
     </header>
   );
 }
