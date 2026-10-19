@@ -22,7 +22,8 @@ export default function Letter() {
       <Title eyebrow="Thư tay" title="Vài dòng anh muốn nói" />
       <motion.div ref={ref} initial={{ opacity: 0, rotate: -2, y: 40 }} whileInView={{ opacity: 1, rotate: -1, y: 0 }} viewport={{ once: true }}
         className="paper relative mx-auto max-w-2xl rounded-sm px-6 py-10 shadow-[0_30px_80px_-30px_rgba(107,21,48,0.45)] sm:px-14 sm:py-14">
-        <img src={photos.her3} alt="" className="absolute -right-4 -top-8 w-24 rotate-6 rounded-sm bg-white p-1.5 pb-5 shadow-xl sm:-right-10 sm:w-32" />
+        {/* float để chữ chạy vòng quanh ảnh, không bị che */}
+        <img src={photos.her3} alt="" className="float-right -mr-3 -mt-14 mb-3 ml-4 w-24 rotate-6 rounded-sm bg-white p-1.5 pb-5 shadow-xl sm:-mr-10 sm:-mt-20 sm:ml-6 sm:w-36" />
         <span className="absolute -left-3 top-6 h-8 w-24 -rotate-12 bg-gold-300/70" />
         <p className="font-script text-3xl text-wine-700">{letter.greeting}</p>
         <p className="mt-4 min-h-[18rem] whitespace-pre-line font-serif text-lg leading-[34px] text-wine-950/90">
