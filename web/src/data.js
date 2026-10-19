@@ -23,10 +23,21 @@ export const photos = {
   finale: P('photos/memory/9.jpg'),
 };
 
+// Nhạc phát qua YouTube nhúng (video chính thức), id là phần sau "watch?v="
 export const playlist = [
-  { title: 'Love', src: P('music/love.mp3') },
-  { title: 'Romantic', src: P('music/romantic.mp3') },
-  { title: 'Sweet', src: P('music/sweet.mp3') },
+  { id: 'Ga-RSTJbFjo', title: 'Until You', artist: 'Shayne Ward' },
+  { id: 'o_lN37OAJ9U', title: 'Cưới Nhau Đi (Yes I Do)', artist: 'Bùi Anh Tuấn & Hiền Hồ' },
+  { id: '2Vv-BfVoq4g', title: 'Perfect', artist: 'Ed Sheeran' },
+  { id: '06-XXOTP3Gc', title: 'Beautiful In White', artist: 'Shane Filan' },
+  { id: '450p7goxZqg', title: 'All of Me', artist: 'John Legend' },
+  { id: 'rtOvBOTyX00', title: 'A Thousand Years', artist: 'Christina Perri' },
+  { id: 'ulOb9gIGGd0', title: 'My Love', artist: 'Westlife' },
+  { id: 'hNCKSS2E_yU', title: 'I Do', artist: 'Westlife' },
+  { id: '1kofixtz2Us', title: 'I Do (Cherish You)', artist: '98º' },
+  { id: 'acvIVA9-FMQ', title: 'Lucky', artist: 'Jason Mraz ft. Colbie Caillat' },
+  { id: 'SPUJIbXN0WY', title: 'Everything', artist: 'Michael Bublé' },
+  { id: 'dElRVQFqj-k', title: 'Marry You', artist: 'Bruno Mars' },
+  { id: '3HbKnQxd0_E', title: 'Breathless', artist: 'Shayne Ward' },
 ];
 
 export const story = [
