@@ -20,7 +20,7 @@ export default function Invite({ serverAnswer }) {
   const yes = () => {
     setAnswered(true);
     local.set('rsvp', true);
-    api.rsvp('yes', tries).catch(() => {});
+    api.rsvp('yes', tries, invite).catch(() => {});
     const end = Date.now() + 1500;
     (function frame() {
       confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#e2657f', '#f3d9a4'] });

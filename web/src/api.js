@@ -23,7 +23,7 @@ export const api = {
   wish: (text) => call('/api/wishes', { text }),
   redeem: (id, title) => call(`/api/coupons/${id}/redeem`, { title }),
   flower: () => call('/api/flowers', {}),
-  rsvp: (answer, attempts) => call('/api/rsvp', { answer, attempts }),
+  rsvp: (answer, attempts, invite) => call('/api/rsvp', { answer, attempts, invite }),
   quiz: (score, total) => call('/api/quiz', { score, total }),
   poem: (style) => call('/api/poem', { style }),
 };

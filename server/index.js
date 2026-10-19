@@ -13,7 +13,9 @@ const {
   GEMINI_LOCATION = 'global',
   GEMINI_MODEL = 'gemini-3.5-flash',
   NOTIFY_TO,
-  SMTP_HOST, SMTP_PORT = '587', SMTP_USERNAME, SMTP_PASSWORD, SMTP_FROM_EMAIL, SMTP_FROM_NAME = 'Duyên 20/10',
+  HER_EMAIL,
+  SITE_URL = 'https://ngocthien2306.github.io/duyen-2010/',
+  SMTP_HOST, SMTP_PORT = '587', SMTP_USERNAME, SMTP_PASSWORD, SMTP_FROM_EMAIL, SMTP_FROM_NAME = 'Ngọc Thiện',
 } = process.env;
 
 const db = new Firestore({ databaseId: FIRESTORE_DB });
@@ -45,22 +47,38 @@ const limit = (max, windowMs) => (req, res, next) => {
   arr.push(now); hits.set(k, arr); next();
 };
 
-async function notify(subject, html) {
-  await events.add({ subject, at: Date.now() }).catch((e) => console.error('event', e.message));
-  if (!mailer || !NOTIFY_TO) return;
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// Thư viết như thư cá nhân (có bản text thuần, tiêu đề ít emoji, Reply-To là mail thật của anh)
+// để Gmail xếp vào hộp thư chính thay vì Spam/Quảng cáo.
+async function send(to, subject, paragraphs, sign = 'Thiện') {
+  if (!mailer || !to) return;
+  const text = `${paragraphs.join('\n\n')}\n\n${sign}`;
+  const html = `<!doctype html><html lang="vi"><body style="margin:0;padding:24px 12px;background:#fff7fa">
+<div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:14px;padding:28px 26px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.65;color:#3a0a1e;border:1px solid #ffe3ee">
+${paragraphs.map((p) => `<p style="margin:0 0 14px">${esc(p).replace(/\n/g, '<br>')}</p>`).join('\n')}
+<p style="margin:22px 0 0;color:#b4185d">${esc(sign)}</p>
+</div></body></html>`;
   try {
     await mailer.sendMail({
-      from: `${SMTP_FROM_NAME} <${SMTP_FROM_EMAIL || SMTP_USERNAME}>`,
-      to: NOTIFY_TO,
+      from: { name: SMTP_FROM_NAME, address: SMTP_FROM_EMAIL || SMTP_USERNAME },
+      replyTo: NOTIFY_TO || undefined,
+      to,
       subject,
-      html: `<div style="font-family:sans-serif;max-width:520px;margin:auto;padding:24px;border-radius:16px;background:#fff8f3;color:#4a0f22">
-        <h2 style="color:#b42647;margin-top:0">${subject}</h2>${html}
-        <p style="color:#999;font-size:12px;margin-top:24px">Gửi từ trang 20/10 của Duyên · ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Taipei' })}</p></div>`,
+      text,
+      html,
     });
   } catch (e) { console.error('mail', e.message); }
 }
 
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// Báo cho anh
+async function notify(subject, paragraphs) {
+  await events.add({ subject, at: Date.now() }).catch((e) => console.error('event', e.message));
+  await send(NOTIFY_TO, subject, [...paragraphs, `Lúc ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Taipei' })} (giờ Đài Loan).`], 'Trang 20/10 của Duyên');
+}
+
+// Gửi cho em
+const toHer = (subject, paragraphs) => send(HER_EMAIL, subject, paragraphs);
 
 app.get('/api/state', async (_req, res) => {
   const [snap, ws] = await Promise.all([doc.get(), wishes.orderBy('at', 'desc').limit(50).get()]);
@@ -72,7 +90,7 @@ app.post('/api/open', limit(5, 60_000), async (_req, res) => {
   const snap = await doc.get();
   const first = !snap.exists || !snap.data().openedAt;
   await doc.set({ openedAt: first ? Date.now() : snap.data().openedAt, opens: FieldValue.increment(1) }, { merge: true });
-  if (first) notify('💌 Duyên vừa mở quà 20/10!', '<p>Em ấy đã nhập đúng mật mã và đang xem trang web. Chuẩn bị tinh thần nha 😆</p>');
+  if (first) notify('Duyên vừa mở quà 20/10', ['Em ấy đã nhập đúng mật mã và đang xem trang web. Chuẩn bị tinh thần nha.']);
   res.json({ ok: true });
 });
 
@@ -86,7 +104,8 @@ app.post('/api/wishes', limit(10, 60_000), async (req, res) => {
   if (!text) return res.status(400).json({ error: 'Trống' });
   const wish = { text, at: Date.now() };
   await wishes.add(wish);
-  notify('⭐ Duyên vừa thả một điều ước', `<p style="font-size:18px">“${esc(text)}”</p><p>Thực hiện liền đi anh ơi!</p>`);
+  notify('Duyên vừa thả một điều ước', [`“${text}”`, 'Thực hiện liền đi anh ơi!']);
+  toHer('Anh đã nhận được điều ước của em', ['Em ơi,', `Anh vừa nhận được điều ước em thả vào lọ: “${text}”`, 'Anh ghi lại rồi, để anh thực hiện cho em nha. Em muốn ước thêm gì cứ vào trang ước tiếp:', SITE_URL]);
   res.json({ ok: true, wish });
 });
 
@@ -94,7 +113,8 @@ app.post('/api/coupons/:id/redeem', limit(10, 60_000), async (req, res) => {
   const id = String(req.params.id).slice(0, 40);
   const title = String(req.body?.title || id).slice(0, 100);
   await doc.set({ redeemed: FieldValue.arrayUnion(id) }, { merge: true });
-  notify(`🎁 Duyên dùng phiếu: ${title}`, `<p>Em ấy vừa dùng phiếu <b>${esc(title)}</b>. Thực hiện vô điều kiện nha!</p>`);
+  notify(`Duyên dùng phiếu: ${title}`, [`Em ấy vừa dùng phiếu “${title}”.`, 'Thực hiện vô điều kiện nha!']);
+  toHer(`Phiếu “${title}” đã được ghi nhận`, ['Em ơi,', `Anh nhận được phiếu “${title}” của em rồi nhé. Phiếu này có hiệu lực ngay, anh sẽ thực hiện sớm nhất có thể.`, 'Cảm ơn em đã dùng phiếu, cứ dùng hết luôn cũng được.']);
   res.json({ ok: true });
 });
 
@@ -102,8 +122,15 @@ app.post('/api/rsvp', limit(5, 60_000), async (req, res) => {
   const answer = req.body?.answer === 'yes' ? 'yes' : 'no';
   const attempts = Number(req.body?.attempts) || 0;
   await doc.set({ rsvp: answer, rsvpAt: Date.now() }, { merge: true });
-  notify(answer === 'yes' ? '🥂 Duyên đã ĐỒNG Ý lời mời tối 20/10!' : 'Duyên trả lời lời mời',
-    `<p>Câu trả lời: <b>${answer}</b>${attempts ? ` (sau ${attempts} lần cố bấm nút "Để em suy nghĩ" 😂)` : ''}</p>`);
+  const inv = req.body?.invite || {};
+  const field = (k) => String(inv[k] || '').slice(0, 200);
+  notify(answer === 'yes' ? 'Duyên đã đồng ý lời mời tối 20/10' : 'Duyên trả lời lời mời',
+    [`Câu trả lời: ${answer}${attempts ? ` (sau ${attempts} lần cố bấm nút "Để em suy nghĩ")` : ''}.`]);
+  if (answer === 'yes') {
+    toHer('Hẹn em tối 20/10 nhé', ['Em ơi,', 'Cảm ơn em đã nhận lời mời của anh. Anh ghi lại lịch hẹn ở đây cho em nha:',
+      [field('when') && `Thời gian: ${field('when')}`, field('where') && `Địa điểm: ${field('where')}`, field('what') && `Có gì: ${field('what')}`].filter(Boolean).join('\n'),
+      'Chúc em một ngày 20/10 thật vui và thật xinh. Hẹn gặp em tối nay.']);
+  }
   res.json({ ok: true });
 });
 
@@ -111,7 +138,7 @@ app.post('/api/quiz', limit(10, 60_000), async (req, res) => {
   const score = Number(req.body?.score) || 0;
   const total = Number(req.body?.total) || 0;
   await doc.set({ quiz: { score, total, at: Date.now() } }, { merge: true });
-  notify(`🎮 Duyên làm quiz được ${score}/${total}`, `<p>${score === total ? 'Điểm tuyệt đối! Nhớ thưởng em nha.' : 'Có vài câu sai, nhớ “phạt” cho đúng luật 😚'}</p>`);
+  notify(`Duyên làm quiz được ${score}/${total}`, [score === total ? 'Điểm tuyệt đối! Nhớ thưởng em nha.' : 'Có vài câu sai, nhớ “phạt” cho đúng luật.']);
   res.json({ ok: true });
 });
 
