@@ -28,7 +28,8 @@ export default function App() {
     setKey(code);
     setUnlocked(true);
     music.current?.play();
-    api.open().catch(() => {});
+    // Anh xem thử bằng link có ?thien thì không báo "em đã mở quà"
+    if (!new URLSearchParams(window.location.search).has('thien')) api.open().catch(() => {});
     api.state().then(setState).catch(() => {});
   };
 
